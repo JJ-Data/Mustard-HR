@@ -690,58 +690,74 @@
                         value="9d29657f-655c-4811-b7a3-509ac986f7e7"
                       />
 
+                      <!-- Optional: Email sent to this name -->
+                      <input
+                        type="hidden"
+                        name="from_name"
+                        value="Mustard HR Website"
+                      />
+
+                      <!-- Optional: Email subject -->
+                      <input
+                        type="hidden"
+                        name="subject"
+                        value="New Contact Form Submission from Mustard HR"
+                      />
+
+                      <!-- Optional: Redirect after successful submission -->
+                      <input
+                        type="hidden"
+                        name="redirect"
+                        value="https://mustardhr.ng/thank-you.html"
+                      />
+
+                      <!-- Your Name Field -->
                       <div class="u-form-group u-form-name">
-                        <label for="name" class="u-label">Name</label>
+                        <label for="name">Name</label>
                         <input
                           type="text"
-                          placeholder="Enter your Name"
                           id="name"
                           name="name"
+                          placeholder="Enter your Name"
                           class="u-grey-5 u-input u-input-rectangle"
                           required
                         />
                       </div>
 
-                      <div class="u-form-group u-form-group-2">
-                        <label for="email" class="u-label">Email</label>
+                      <!-- Your Email Field -->
+                      <div class="u-form-group">
+                        <label for="email">Email</label>
                         <input
                           type="email"
-                          placeholder="Enter your Email"
                           id="email"
                           name="email"
+                          placeholder="Enter your Email"
                           class="u-grey-5 u-input u-input-rectangle"
                           required
                         />
                       </div>
 
+                      <!-- Message Field -->
                       <div class="u-form-group u-form-message">
-                        <label for="message" class="u-label">Message</label>
+                        <label for="message">Message</label>
                         <textarea
-                          placeholder="Enter your message"
-                          rows="4"
-                          cols="50"
                           id="message"
                           name="message"
+                          rows="4"
+                          placeholder="Enter your message"
                           class="u-grey-5 u-input u-input-rectangle"
                           required
                         ></textarea>
                       </div>
 
+                      <!-- Submit Button -->
                       <div class="u-align-left u-form-group u-form-submit">
                         <button
                           type="submit"
-                          class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1"
+                          class="u-border-none u-btn u-button-style u-palette-1-base u-btn-1"
                         >
                           Submit
                         </button>
-                      </div>
-
-                      <div class="u-form-send-message u-form-send-success">
-                        Thank you! Your message has been sent.
-                      </div>
-                      <div class="u-form-send-error u-form-send-message">
-                        Unable to send your message. Please fix errors then try
-                        again.
                       </div>
                     </form>
                   </div>
