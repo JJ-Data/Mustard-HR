@@ -9,6 +9,13 @@
     />
     <meta name="description" content="" />
     <title>Mustard HR</title>
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/png" sizes="192x192" href="fav192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="fav192.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="fav192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="fav192.png" />
+    <link rel="shortcut icon" href="fav192.png" />
+
     <link rel="stylesheet" href="nicepage.css" media="screen" />
     <link rel="stylesheet" href="index.css" media="screen" />
     <script
@@ -1189,79 +1196,95 @@
                 >
                   <div class="u-form u-radius-50 u-white u-form-1">
                     <form
-                      id="mustard-contact-form"
-                      action="https://api.web3forms.com/submit"
-                      method="POST"
+                      id="contactForm"
                       class="u-clearfix u-form-spacing-41 u-form-vertical u-inner-form"
                       style="padding: 44px"
                     >
+                      <!-- Web3Forms Access Key -->
                       <input
                         type="hidden"
                         name="access_key"
                         value="9d29657f-655c-4811-b7a3-509ac986f7e7"
                       />
+
+                      <!-- Additional Web3Forms Configuration -->
                       <input
                         type="hidden"
                         name="subject"
                         value="Mustard HR Website"
                       />
+                      <input
+                        type="hidden"
+                        name="from_name"
+                        value="Mustard HR Website"
+                      />
+                      <input type="hidden" name="redirect" value="false" />
 
                       <div class="u-form-group u-form-name">
                         <label for="name-61fc" class="u-label">Name</label>
                         <input
                           type="text"
+                          placeholder="Enter your Name"
                           id="name-61fc"
                           name="name"
-                          placeholder="Enter your Name"
                           class="u-grey-5 u-input u-input-rectangle"
-                          required
+                          required=""
                         />
                       </div>
+
                       <div class="u-form-group u-form-group-2">
-                        <label for="text-1be7" class="u-label">Email</label>
+                        <label for="email-1be7" class="u-label">Email</label>
                         <input
                           type="email"
-                          id="text-1be7"
+                          placeholder="Enter your email"
+                          id="email-1be7"
                           name="email"
                           class="u-grey-5 u-input u-input-rectangle"
-                          required
+                          required=""
                         />
                       </div>
+
                       <div class="u-form-group u-form-message">
                         <label for="message-61fc" class="u-label"
                           >Message</label
                         >
                         <textarea
+                          placeholder="Enter your message"
+                          rows="4"
+                          cols="50"
                           id="message-61fc"
                           name="message"
                           class="u-grey-5 u-input u-input-rectangle"
-                          rows="4"
-                          placeholder="Enter your message"
-                          required
+                          required=""
                         ></textarea>
                       </div>
+
                       <div class="u-align-left u-form-group u-form-submit">
                         <button
                           type="submit"
                           class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1"
+                          id="submitBtn"
                         >
-                          Submit
+                          <span
+                            class="loading-spinner"
+                            id="loadingSpinner"
+                          ></span>
+                          <span id="submitText">Submit</span>
                         </button>
                       </div>
 
+                      <!-- Success Message -->
                       <div
-                        class="u-form-send-message u-form-send-success"
-                        id="form-success"
-                        style="display: none"
+                        class="form-message form-success"
+                        id="successMessage"
                       >
-                        ✅ Thank you! Your message has been sent.
+                        Thank you! Your message has been sent successfully.
                       </div>
-                      <div
-                        class="u-form-send-error u-form-send-message"
-                        id="form-error"
-                        style="display: none"
-                      >
-                        ❌ Unable to send your message. Please try again.
+
+                      <!-- Error Message -->
+                      <div class="form-message form-error" id="errorMessage">
+                        Unable to send your message. Please fix errors then try
+                        again.
                       </div>
                     </form>
                   </div>
@@ -1483,34 +1506,70 @@
         </a>
       </div>
     </footer>
+
     <script>
-      const form = document.getElementById("mustard-contact-form");
-      const successMsg = document.getElementById("form-success");
-      const errorMsg = document.getElementById("form-error");
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        successMsg.style.display = "none";
-        errorMsg.style.display = "none";
+          const form = e.target;
+          const submitBtn = document.getElementById("submitBtn");
+          const submitText = document.getElementById("submitText");
+          const loadingSpinner = document.getElementById("loadingSpinner");
+          const successMessage = document.getElementById("successMessage");
+          const errorMessage = document.getElementById("errorMessage");
 
-        const formData = new FormData(form);
-        try {
-          const res = await fetch(form.action, {
-            method: "POST",
-            body: formData,
-            headers: { Accept: "application/json" },
-          });
+          // Hide previous messages
+          successMessage.style.display = "none";
+          errorMessage.style.display = "none";
 
-          if (res.ok) {
-            successMsg.style.display = "block";
-            form.reset();
-          } else {
-            errorMsg.style.display = "block";
+          // Show loading state
+          submitBtn.disabled = true;
+          loadingSpinner.style.display = "inline-block";
+          submitText.textContent = "Sending...";
+
+          try {
+            const formData = new FormData(form);
+
+            const response = await fetch("https://api.web3forms.com/submit", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              // Show success message
+              successMessage.style.display = "block";
+              form.reset(); // Clear the form
+
+              // Scroll to success message
+              successMessage.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+              });
+
+              // Hide success message after 5 seconds
+              setTimeout(() => {
+                successMessage.style.display = "none";
+              }, 5000);
+            } else {
+              // Show error message
+              errorMessage.style.display = "block";
+              console.error("Form submission error:", data);
+            }
+          } catch (error) {
+            // Show error message for network issues
+            errorMessage.style.display = "block";
+            console.error("Network error:", error);
+          } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            loadingSpinner.style.display = "none";
+            submitText.textContent = "Submit";
           }
-        } catch (error) {
-          errorMsg.style.display = "block";
-        }
-      });
+        });
     </script>
   </body>
 </html>
