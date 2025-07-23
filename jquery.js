@@ -5649,30 +5649,3 @@
         return b;
       });
 })(window);
-
-// <!-- Add this JS to handle success/error without page reload -->
-<script>
-  const form = document.querySelector('form');
-  const successMsg = document.getElementById('form-success-message');
-  const errorMsg = document.getElementById('form-error-message');
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    successMsg.style.display = 'none';
-    errorMsg.style.display = 'none';
-
-    const formData = new FormData(form);
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData,
-      headers: { Accept: 'application/json' },
-    });
-
-    if (response.ok) {
-      successMsg.style.display = 'block';
-      form.reset();
-    } else {
-      errorMsg.style.display = 'block';
-    }
-  });
-</script>

@@ -8,7 +8,7 @@
       content="Company, ​High Quality 3D visualization of the project"
     />
     <meta name="description" content="" />
-    <title>Home 1</title>
+    <title>Mustard HR</title>
     <link rel="stylesheet" href="nicepage.css" media="screen" />
     <link rel="stylesheet" href="index.css" media="screen" />
     <script
@@ -1189,12 +1189,11 @@
                 >
                   <div class="u-form u-radius-50 u-white u-form-1">
                     <form
+                      id="mustard-contact-form"
                       action="https://api.web3forms.com/submit"
                       method="POST"
                       class="u-clearfix u-form-spacing-41 u-form-vertical u-inner-form"
-                      name="form"
                       style="padding: 44px"
-                      id="mustard-contact-form"
                     >
                       <input
                         type="hidden"
@@ -1215,7 +1214,7 @@
                           id="name-61fc"
                           name="name"
                           class="u-grey-5 u-input u-input-rectangle"
-                          required=""
+                          required
                         />
                       </div>
                       <div class="u-form-group u-form-group-2">
@@ -1240,21 +1239,16 @@
                           id="message-61fc"
                           name="message"
                           class="u-grey-5 u-input u-input-rectangle"
-                          required=""
+                          required
                         ></textarea>
                       </div>
                       <div class="u-align-left u-form-group u-form-submit">
-                        <a
-                          href="#"
-                          class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1"
-                          onclick="document.getElementById('mustard-contact-form').requestSubmit(); return false;"
-                          >Submit</a
-                        >
-                        <input
+                        <button
                           type="submit"
-                          value="submit"
-                          class="u-form-control-hidden"
-                        />
+                          class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1"
+                        >
+                          Submit
+                        </button>
                       </div>
 
                       <div
@@ -1269,7 +1263,7 @@
                         id="form-error"
                         style="display: none"
                       >
-                        ❌ Unable to send your message. Please try again.
+                        ❌ Failed to send message. Please try again.
                       </div>
                     </form>
                   </div>
@@ -1280,6 +1274,39 @@
         </div>
       </div>
     </section>
+
+    <!-- Minimal script for AJAX form handling -->
+    <script>
+      const form = document.getElementById("mustard-contact-form");
+      const successMsg = document.getElementById("form-success");
+      const errorMsg = document.getElementById("form-error");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        successMsg.style.display = "none";
+        errorMsg.style.display = "none";
+
+        const formData = new FormData(form);
+
+        try {
+          const res = await fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: { Accept: "application/json" },
+          });
+
+          if (res.ok) {
+            form.reset();
+            successMsg.style.display = "block";
+          } else {
+            errorMsg.style.display = "block";
+          }
+        } catch (err) {
+          errorMsg.style.display = "block";
+        }
+      });
+    </script>
 
     <footer class="u-black u-clearfix u-footer" id="sec-cb70">
       <div class="u-clearfix u-sheet u-sheet-1">
